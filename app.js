@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const errorHandlerMiddleware = require("./middlewares/errorhandler.Middleware");
 require("dotenv").config();
 
 const PORT = process.env.PORT;
@@ -18,6 +19,7 @@ app.use("/api", [router, userRoutes, resumeRoutes]);
 router.get("/", (req, res) => {
   return res.json({ message: "안녕하세요.😄" });
 });
+app.use(errorHandlerMiddleware);
 
 app.listen(PORT, () => {
   console.log(

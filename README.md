@@ -33,6 +33,7 @@
 ├── .gitignore
 ├── .prettierrc
 ├── middlewares
+│   └── errorhandler.Middleware
 │   └── auth.middleware.js
 └── controllers
 │   ├── resumes.js

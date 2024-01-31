@@ -46,18 +46,19 @@ model UserInfos {
 
 model Resumes {
   resumeId  Int      @id @default(autoincrement()) @map("resumeId")
-  userId    Int      @unique @map("userId") // FK
+  userId    Int      @map("userId")
   title     String   @map("title")
   content   String   @map("content")
   createdAt DateTime @default(now()) @map("createdAt")
   updatedAt DateTime @updatedAt @map("updatedAt")
 
-  user Users @relation(fields: [userId], references: [userId], onDelete: Cascade)
+  status Status
+  user   Users  @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@map("Resumes")
 }
 
-enum ResumeStatusType {
+enum Status {
   APPLY // 서류 지원완료
   DROP // 서류 탈락
   PASS // 서류 합격
