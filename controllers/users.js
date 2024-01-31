@@ -37,6 +37,7 @@ exports.createUser = async (req, res, next) => {
   return res.status(201).json({ userInfo });
 };
 
+/** 사용자 로그인 API */
 exports.userLogin = async (req, res, next) => {
   const { email, password } = req.body;
   const isExistUser = await userModel.users.findFirst({
@@ -55,13 +56,33 @@ exports.userLogin = async (req, res, next) => {
       userId: isExistUser.userId,
     },
     "user-secret-key",
-    { expireIN: "12h " },
+    { expiresIn: "12h" },
   );
 
   res.cookie("authorization", `Bearer ${token}`);
   return res.status(200).json({ message: "로그인에 성공하였습니다.😄" });
 };
 
-exports.getUsers = async (req, res, next) => {
-  return res.json({ message: "getUsers.😄" });
+/** 내 정보 조회 */
+exports.getMyInfos = async (req, res, next) => {
+  const { userId } = req.user;
+  const myInfos = await userModel.users.findFirst({
+    where: { userId: +userId },
+    select: {
+      userId: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+      userInfos: {
+        select: {
+          name: true,
+          age: true,
+          gender: true,
+          profileImage: true,
+        },
+      },
+    },
+  });
+
+  return res.status(200).json({ myInfos });
 };
