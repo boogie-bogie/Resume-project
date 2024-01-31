@@ -35,14 +35,16 @@
 └── controllers
 │   ├── resumes.js
 │   └── users.js
-└── models
+└── routers
+│   ├── resumes.router.js
+│   └── users.router.js
+└── prisma
 │   ├── index.js
 │   └── schema.prisma
 ├── tests
 │   ├── data
 │   ├── integration
 │   └── unit
-├── routes.js
 ├── app.js
 ├── package-lock.json
 └── package.json
