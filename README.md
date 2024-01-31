@@ -5,13 +5,14 @@
 ---
 
 <br>
-👉🏼 **[Domain]** http://bogiegie.shop:3000/api
+👉🏼 [Domain] http://bogiegie.shop:3000/api
 
 👉🏼 **[Github]** https://github.com/boogie-bogie
 
 👉🏼 **[Swagger API Docs]** http://localhost:3000/api-docs
-
 👉🏼 **[Notion API Dcos]** https://www.notion.so/f09222ba36a444d5802f6c08945468bf
+👉🏼 **[ERD]** https://drawsql.app/teams/1-524/diagrams/resume-project
+
 <br>
 
 - 웹 프레임워크/데이터베이스 : Node.js, Express.js, MySQL, Prisma ORM
@@ -68,6 +69,8 @@
    - 과제에서 구현한 Middleware는 인증에 해당하나요? 인가에 해당하나요? 그 이유도 알려주세요.
 4. **Http Status Code**
    - 과제를 진행하면서 사용한 Http Status Code를 모두 나열하고, 각각이 의미하는 것과 어떤 상황에 사용했는지 작성해 주세요.
+     - #201/POST 요청 성공 : 회원가입 성공
+     - #409/유효성 검사 실패 : 중복된 이메일, 비밀번호 6자리, 비밀번호 확인과 불일치
 5. **리팩토링**
    - MySQL, Prisma로 개발했는데 MySQL을 MongoDB로 혹은 Prisma 를 TypeORM 로 변경하게 된다면 많은 코드 변경이 필요할까요? 주로 어떤 코드에서 변경이 필요한가요?
    - **만약 이렇게 DB를 변경하는 경우가 또 발생했을 때, 코드 변경을 보다 쉽게 하려면 어떻게 코드를 작성하면 좋을 지 생각나는 방식이 있나요? 있다면 작성해 주세요.**
