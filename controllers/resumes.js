@@ -1,5 +1,58 @@
 const resumeModel = require("../prisma/index");
 
+/** 이력서 조회 API */
+exports.getResumes = async (req, res, next) => {
+  try {
+    const { orderKey, orderValue } = req.query;
+
+    let orderBy = {};
+    if (orderKey && orderValue) {
+      orderBy[orderKey] = { [orderValue.toUpperCase()]: true };
+    } else {
+      orderBy = { createdAt: "desc" };
+    }
+
+    const resumes = await resumeModel.resumes.findMany({
+      include: {
+        user: {
+          select: {
+            userInfos: {
+              select: { name: true },
+            },
+          },
+        },
+      },
+      orderBy,
+    });
+    return res.status(200).json({ resumes });
+  } catch (error) {
+    console.error("이력서 조회 중 오류:", error);
+    next();
+  }
+};
+
+/** 이력서 세부 조회 API */
+exports.getResumeById = async (req, res, next) => {
+  const { resumeId } = req.params;
+  const resume = await resumeModel.resumes.findFirst({
+    where: {
+      resumeId: +resumeId,
+    },
+    include: {
+      user: {
+        select: {
+          userInfos: {
+            select: { name: true },
+          },
+        },
+      },
+    },
+  });
+  return res.status(200).json({ data: resume });
+};
+
+/** 추가인증  */
+
 /** 이력서 생성 API */
 exports.createResume = async (req, res, next) => {
   try {
@@ -20,59 +73,6 @@ exports.createResume = async (req, res, next) => {
     console.error("이력서 생성 중 오류:", error);
     next();
   }
-};
-
-/** 이력서 조회 API */
-exports.getResumes = async (req, res, next) => {
-  try {
-    const { orderKey, orderValue } = req.query;
-
-    let orderBy = {};
-    if (orderKey && orderValue) {
-      orderBy[orderKey] = { [orderValue.toUpperCase()]: true };
-    } else {
-      orderBy = { createdAt: "desc" };
-    }
-
-    const resumes = await resumeModel.resumes.findMany({
-      select: {
-        resumeId: true,
-        userId: true,
-        title: true,
-        content: true,
-        status: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-      orderBy,
-    });
-
-    return res.status(200).json({ resumes });
-  } catch (error) {
-    console.error("이력서 조회 중 오류:", error);
-    next();
-  }
-};
-
-/** 이력서 세부 조회 API */
-exports.getResumeById = async (req, res, next) => {
-  const { resumeId } = req.params;
-  const resume = await resumeModel.resumes.findFirst({
-    where: {
-      resumeId: +resumeId,
-    },
-    select: {
-      resumeId: true,
-      userId: true,
-      title: true,
-      content: true,
-      status: true,
-      createdAt: true,
-      updatedAt: true,
-    },
-  });
-
-  return res.status(200).json({ data: resume });
 };
 
 /** 이력서 수정 API */
