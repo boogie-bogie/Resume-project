@@ -17,13 +17,13 @@ model Users {
   createdAt DateTime @default(now()) @map("createdAt")
   updatedAt DateTime @updatedAt @map("updatedAt")
 
-  userInfos UserInfos? // 1:1
-  resumes   Resumes[] // 1:N
+  userInfos     UserInfos? // 1:1
+  refreshtokens Refreshtokens[]
+  resumes       Resumes[] // 1:N
 
   @@map("Users")
 }
 
-// roletype: [UserRoleType.ADMIN, UserRoleType.USER],
 enum UserRoleType {
   USER
   ADMIN
@@ -42,6 +42,18 @@ model UserInfos {
   user Users @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@map("UserInfos")
+}
+
+model Refreshtokens {
+  tokenId   Int      @id @default(autoincrement()) @map("tokenId")
+  userId    Int      @map("userId")
+  token     String   @unique @map("token")
+  expiresAt DateTime @map("expiresAt")
+  createdAt DateTime @default(now()) @map("createdAt")
+  ip        String   @map("ip")
+  userAgent String   @map("userAgent")
+
+  user Users @relation(fields: [userId], references: [userId], onDelete: Cascade)
 }
 
 model Resumes {
