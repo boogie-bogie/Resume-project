@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 /** 사용자 회원가입 API */
 exports.createUser = async (req, res, next) => {
   try {
-    const { email, password, name, age, gender, profileImage } = req.body;
+    const { email, password, pwMatch, name, age, gender, profileImage } =
+      req.body;
     const isExistUser = await userModel.users.findFirst({
       where: {
         email,
@@ -19,6 +20,10 @@ exports.createUser = async (req, res, next) => {
         .status(409)
         .json({ message: "비밀번호는 6자리 이상이어야 합니다." });
     }
+    if (password !== pwMatch)
+      return res
+        .status(409)
+        .json({ message: "'비밀번호'와 '비밀번호 확인'이 일치하지 않습니다." });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
