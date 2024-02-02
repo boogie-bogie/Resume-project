@@ -5,7 +5,6 @@
 ---
 
 <br>
-👉🏼 [Domain] http://bogiegie.shop:3000/api
 
 👉🏼 **[Github]** https://github.com/boogie-bogie/Resume-project
 
