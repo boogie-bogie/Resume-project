@@ -13,17 +13,19 @@ exports.createUser = async (req, res, next) => {
       },
     });
     if (isExistUser) {
-      return res.status(409).json({ message: "이미 존재하는 이메일입니다." });
+      return res
+        .status(400)
+        .json({ errorMessage: "이미 존재하는 이메일입니다." });
     }
     if (!(password.length >= 6)) {
       return res
-        .status(409)
-        .json({ message: "비밀번호는 6자리 이상이어야 합니다." });
+        .status(400)
+        .json({ errorMessage: "비밀번호는 6자리 이상이어야 합니다." });
     }
     if (password !== pwMatch)
-      return res
-        .status(409)
-        .json({ message: "'비밀번호'와 '비밀번호 확인'이 일치하지 않습니다." });
+      return res.status(400).json({
+        errorMessage: "'비밀번호'와 '비밀번호 확인'이 일치하지 않습니다.",
+      });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -56,10 +58,10 @@ exports.createUser = async (req, res, next) => {
 //       },
 //     });
 //     if (!isExistUser) {
-//       return res.status(408).json({ message: "존재하지 않는 이메일입니다." });
+//       return res.status(408).json({ errorMessage: "존재하지 않는 이메일입니다." });
 //     }
 //     if (!(await bcrypt.compare(password, isExistUser.password))) {
-//       return res.status(408).json({ message: "비밀번호가 일치하지 않습니다." });
+//       return res.status(408).json({ errorMessage: "비밀번호가 일치하지 않습니다." });
 //     }
 
 //     const token = jwt.sign(
@@ -67,7 +69,7 @@ exports.createUser = async (req, res, next) => {
 //         userId: isExistUser.userId,
 //       },
 //       process.env.JWT_SECRET,
-//       { expiresIn: "5s" },
+//       { expiresIn: "12h" },
 //     );
 //     res.cookie("authorization", `Bearer ${token}`);
 
@@ -86,22 +88,26 @@ exports.tokenLogin = async (req, res, next) => {
       },
     });
     if (!isExistUser) {
-      return res.status(408).json({ message: "존재하지 않는 이메일입니다." });
+      return res
+        .status(400)
+        .json({ errorMessage: "존재하지 않는 이메일입니다." });
     }
     if (!(await bcrypt.compare(password, isExistUser.password))) {
-      return res.status(408).json({ message: "비밀번호가 일치하지 않습니다." });
+      return res
+        .status(400)
+        .json({ errorMessage: "비밀번호가 일치하지 않습니다." });
     }
 
     const tokenStorages = {};
     const accessToken = jwt.sign(
       { userid: isExistUser.userId },
       process.env.JWT_ACCESS_SECRET_KEY,
-      { expiresIn: "5s" },
+      { expiresIn: "1h" },
     );
     const refreshToken = jwt.sign(
       { userid: isExistUser.userId },
       process.env.JWT_REFRESH_SECRET_KEY,
-      { expiresIn: "1h" },
+      { expiresIn: "3d" },
     );
 
     /** 보통 RefreshToken은 Redis나 DB에 저장한다.

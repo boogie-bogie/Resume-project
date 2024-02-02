@@ -33,11 +33,11 @@ const jwt = require("jsonwebtoken");
 //       case "TokenExpiredError":
 //         return res
 //           .status(401)
-//           .json({ message: "토큰이 만료되었습니다. 다시 로그인 해주세요!" });
+//           .json({ errorMessage: "토큰이 만료되었습니다. 다시 로그인 해주세요!" });
 //       case "JsonWebTokenError":
 //         return res
 //           .status(401)
-//           .json({ message: "토큰이 조작되었습니다. 다시 로그인 해주세요!" });
+//           .json({ errorMessage: "토큰이 조작되었습니다. 다시 로그인 해주세요!" });
 //       default:
 //         return res
 //           .status(401)
@@ -47,11 +47,16 @@ const jwt = require("jsonwebtoken");
 // };
 
 const authMiddleware = async (req, res, next) => {
-  const { accessToken } = req.cookies;
+  const { accessToken, refreshToken } = req.cookies;
 
-  if (!accessToken) {
-    return res.status(400).json({
-      errorMessage: "Access Token이 존재하지 않습니다. 로그인이 필요합니다.",
+  /** 검증해야하는 케이스
+   * 1. accessToken과 refreshToken 모두 만료된 경우 -> 에러 발생 -> 로그인 필요
+   * 2. accessToken이 만료됐지만, refreshToken은 유효한 경우 -> access token 재발급
+   * 3. accessToken은 유효하지만, refreshToken은 만료된 경우 -> refresh token 재발급
+   * 4. accessToken과 refreshToken 모두 유효된 경우 -> next() */
+  if (!accessToken && !refreshToken) {
+    return res.status(401).json({
+      errorMessage: "API 사용 권한이 없습니다. 로그인이 필요합니다.",
     });
   }
 
@@ -62,18 +67,17 @@ const authMiddleware = async (req, res, next) => {
       .status(401)
       .json({ errorMessage: "Access Token이 유효하지 않습니다." });
   }
-
   const { userid } = payload;
   console.log(payload);
   return res.json({ message: `${userid} : 성공적으로 인증되었습니다.😄` });
+  function validateToken(token, secretKey) {
+    try {
+      const payload = jwt.verify(token, secretKey);
+      return payload;
+    } catch (error) {
+      return null;
+    }
+  }
 };
 
-function validateToken(token, secretKey) {
-  try {
-    const payload = jwt.verify(token, secretKey);
-    return payload;
-  } catch (error) {
-    return null;
-  }
-}
 module.exports = authMiddleware;
