@@ -157,13 +157,15 @@ exports.updateResume = async (req, res, next) => {
       .status(404)
       .json({ success: false, message: "존재하지 않는 이력서입니다." });
   }
-  if (resume.userId !== user.userId) {
+
+  // 'user' 권한을 가지고 있으면서(and) userId가 일치하지 않으면 -> 잘못된 접근
+  if (user.role === "user" && resume.userId !== user.userId) {
     return res
       .status(400)
       .json({ success: false, message: "올바르지 않은 요청입니다." });
   }
 
-  // 내가 작성한 이력서가 맞다.
+  // userId가 일치하여 내가 작성한 이력서가 맞거나(or) 'admin' 권한을 가지고 있으면 -> 수정할 수 있다.
   await resumeModel.resumes.update({
     where: {
       resumeId: +resumeId,

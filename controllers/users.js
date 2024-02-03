@@ -4,7 +4,14 @@ const jwt = require("jsonwebtoken");
 
 /** 사용자 회원가입 API */
 exports.createUser = async (req, res, next) => {
-  const { clientId, email, password, pwMatch, name } = req.body;
+  const { clientId, email, password, pwMatch, name, role } = req.body;
+
+  if (role && !["user", "admin"].includes(role)) {
+    return res.status(400).json({
+      success: false,
+      message: "사용자 권한 등급이 올바르지 않습니다.",
+    });
+  }
 
   //clientId 존재 유뮤에 따른 분기처리
   if (!clientId) {
@@ -43,9 +50,15 @@ exports.createUser = async (req, res, next) => {
         .json({ errorMessage: "이미 가입된 사용자입니다." });
     }
     // 카카오 사용자 name은 null
+    // ClientId도 해시 처리를 해줘야한다.
+    const hashedClientId = await bcrypt.hash(clientId, 10);
 
     await userModel.users.create({
-      data: { clientId, name },
+      data: {
+        clientId: hashedClientId,
+        name,
+        role,
+      },
     });
   } else {
     // 이메일 유저 검증
@@ -54,6 +67,7 @@ exports.createUser = async (req, res, next) => {
         email,
       },
     });
+
     if (emailUser) {
       return res
         .status(400)
@@ -71,7 +85,12 @@ exports.createUser = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await userModel.users.create({
-      data: { email, password: hashedPassword, name },
+      data: {
+        email,
+        password: hashedPassword,
+        name,
+        role,
+      },
     });
   }
 
