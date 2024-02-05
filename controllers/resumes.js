@@ -35,12 +35,7 @@ exports.getResumes = async (req, res, next) => {
       },
     ],
   });
-  /*프론트와 협의 or 명세서 변경
-  resumes.foreach((resume) => {
-    resume.name = resume.user.name;
-    delete resume.user;
-  });
-  */
+
   return res.json({ data: resumes });
 };
 
@@ -107,6 +102,7 @@ exports.createResume = async (req, res, next) => {
 /** 이력서 수정 API */
 exports.updateResume = async (req, res, next) => {
   const user = req.user;
+  console.log(user);
   const resumeId = req.params.resumeId;
   const { title, content, status } = req.body;
   if (!resumeId) {

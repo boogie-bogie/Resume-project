@@ -152,12 +152,17 @@ exports.userLogin = async (req, res, next) => {
     process.env.JWT_ACCESS_SECRET_KEY,
     { expiresIn: "12h" },
   );
+  const refreshToken = jwt.sign(
+    { userId: user.userId },
+    process.env.JWT_REFRESH_SECRET_KEY,
+    { expiresIn: "7d" },
+  );
 
-  return res.json({ accessToken });
+  return res.json({ accessToken, refreshToken });
 };
 
 /** 내 정보 조회  */
-exports.getMyInfos = (req, res, next) => {
+exports.getMyInfos = (req, res) => {
   const user = req.user;
   return res.json({
     email: user.email,

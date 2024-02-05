@@ -1,6 +1,10 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const errorHandlerMiddleware = require("./middlewares/errorhandler.Middleware");
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json");
+
 require("dotenv").config();
 
 const PORT = process.env.PORT;
@@ -13,12 +17,17 @@ app.use(cookieParser());
 const router = express.Router();
 const userRoutes = require("./routers/users.router");
 const resumeRoutes = require("./routers/resumes.router");
+const tokenRoutes = require("./routers/token.router");
 
-app.use("/api", [router, userRoutes, resumeRoutes]);
+app.use("/api", [router, userRoutes, resumeRoutes, tokenRoutes]);
 
 router.get("/", (req, res) => {
   return res.json({ message: "안녕하세요.😄" });
 });
+
+/** 스웨거 경로 */
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use(errorHandlerMiddleware);
 
 app.listen(PORT, () => {

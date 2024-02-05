@@ -38,10 +38,10 @@ const authMiddleware = async function (req, res, next) {
     }
     const user = await userModel.users.findFirst({
       where: {
-        userId: token.userId,
+        userId: +token.userId,
       },
     });
-    // console.log(user);
+
     if (!user) {
       throw new Error(
         "user 인증 정보가 올바르지 않습니다. 다시 로그인 해주세요!",
@@ -50,9 +50,7 @@ const authMiddleware = async function (req, res, next) {
 
     // user 정보 담기
     req.user = user;
-    console.log(req.user);
-    // req.locals.user = user;
-    // console.log(req.locals.user);
+
     next();
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });
