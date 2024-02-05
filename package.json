@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon app.js",
     "format": "prettier --write *.js **/*.js",
-    "test": "jest"
+    "test": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@prisma/client": "^5.8.1",
