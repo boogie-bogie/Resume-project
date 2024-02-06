@@ -73,7 +73,7 @@ exports.createUser = async (req, res, next) => {
         .status(400)
         .json({ errorMessage: "이미 가입된 이메일입니다." });
     }
-    if (!(password.length >= 6)) {
+    if (password.length < 6) {
       return res
         .status(400)
         .json({ errorMessage: "비밀번호는 6자리 이상이어야 합니다." });

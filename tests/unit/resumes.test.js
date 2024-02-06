@@ -1,5 +1,4 @@
 const resumeController = require("../../controllers/resumes");
-const resumeModel = require("../../prisma/index");
 const httpMocks = require("node-mocks-http");
 
 describe("Resume Controller Create", () => {
@@ -22,7 +21,6 @@ describe("Resume Controller Create", () => {
       message: "이력서 제목은 필수 항목입니다.",
     });
   });
-
   it("정상으로 생성되면, 201번 코드와 성공 메세지를 반환해야함.", async () => {
     const userId = "1";
     const req = httpMocks.createRequest({

@@ -7,36 +7,55 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/sign-up": {
       "post": {
-        "description": "",
+        "summary": "회원가입 API",
+        "description": "카카오 로그인이나 이메일/패스워드를 통해 회원가입을 시도하는 API",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "type": "object",
+            "description": "회원가입 요청 body data",
             "schema": {
               "type": "object",
               "properties": {
                 "clientId": {
+                  "type": "string",
+                  "description": "카카오 로그인했을 경우 카카오 클라이언트 아이디",
+                  "required": false,
                   "example": "any"
                 },
                 "email": {
+                  "type": "string",
+                  "description": "이메일",
+                  "required": false,
                   "example": "any"
                 },
                 "password": {
+                  "type": "string",
+                  "description": "이메일 로그인일 경우 비밀번호",
+                  "required": false,
                   "example": "any"
                 },
                 "pwMatch": {
+                  "type": "string",
+                  "description": "이메일 로그인일 경우 비밀번호 확인",
+                  "required": false,
                   "example": "any"
                 },
                 "name": {
+                  "type": "string",
+                  "description": "이름",
+                  "required": true,
                   "example": "any"
                 },
                 "role": {
+                  "type": "string",
+                  "description": "회원 등급",
+                  "required": false,
                   "example": "any"
                 }
               }

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app.js",
     "format": "prettier --write *.js **/*.js",
-    "test": "jest --watch",
+    "test": "jest --watch --runInBand --detectOpenHandles",
     "coverage": "jest --coverage"
   },
   "dependencies": {
