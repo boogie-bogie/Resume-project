@@ -1,4 +1,4 @@
-const resumeModel = require("../prisma/index");
+const prisma = require("../utils/prisma/index");
 
 /** 이력서 조회 API */
 exports.getResumes = async (req, res, next) => {
@@ -16,7 +16,7 @@ exports.getResumes = async (req, res, next) => {
       .json({ success: false, message: "orderValue 가 올바르지 않습니다." });
   }
 
-  const resumes = await resumeModel.resumes.findMany({
+  const resumes = await prisma.resumes.findMany({
     select: {
       resumeId: true,
       title: true,
@@ -47,7 +47,7 @@ exports.getResumeById = async (req, res, next) => {
       .status(400)
       .json({ success: false, message: "resumeId는 필수 값입니다." });
   }
-  const resume = await resumeModel.resumes.findFirst({
+  const resume = await prisma.resumes.findFirst({
     where: {
       resumeId: +resumeId,
     },
@@ -74,6 +74,7 @@ exports.getResumeById = async (req, res, next) => {
 /** 이력서 생성 API */
 exports.createResume = async (req, res, next) => {
   const user = req.user;
+  print(user);
   const { title, content } = req.body;
 
   if (!title) {
@@ -87,7 +88,7 @@ exports.createResume = async (req, res, next) => {
       .json({ success: false, message: "자기소개는 필수 항목입니다." });
   }
 
-  await resumeModel.resumes.create({
+  await prisma.resumes.create({
     data: {
       title,
       content,
@@ -142,7 +143,7 @@ exports.updateResume = async (req, res, next) => {
     });
   }
   // 수정할 이력서를 조회한다.
-  const resume = await resumeModel.resumes.findFirst({
+  const resume = await prisma.resumes.findFirst({
     where: {
       resumeId: +resumeId,
     },
@@ -162,7 +163,7 @@ exports.updateResume = async (req, res, next) => {
   }
 
   // userId가 일치하여 내가 작성한 이력서가 맞거나(or) 'admin' 권한을 가지고 있으면 -> 수정할 수 있다.
-  await resumeModel.resumes.update({
+  await prisma.resumes.update({
     where: {
       resumeId: +resumeId,
     },
@@ -190,7 +191,7 @@ exports.deleteResume = async (req, res, next) => {
   }
 
   // 수정할 이력서를 조회한다.
-  const resume = await resumeModel.resumes.findFirst({
+  const resume = await prisma.resumes.findFirst({
     where: {
       resumeId: +resumeId,
     },
@@ -208,7 +209,7 @@ exports.deleteResume = async (req, res, next) => {
   }
 
   // 내가 작성한 이력서가 맞다.
-  await resumeModel.resumes.delete({
+  await prisma.resumes.delete({
     where: {
       resumeId: +resumeId,
     },
