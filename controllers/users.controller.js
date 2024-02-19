@@ -87,9 +87,34 @@ class UsersController {
   userLogin = async (req, res, next) => {
     try {
       // Request
-      // 유효성 검사
-      // 이메일 로그인
-      // Response
+      const { clientId, email, password } = req.body;
+      // 이메일 회원 로그인
+      if (!clientId) {
+        // 유효성 검사
+        if (!email) {
+          return res
+            .status(400)
+            .json({ success: false, message: "이메일은 필수값입니다." });
+        }
+        if (!password) {
+          return res
+            .status(400)
+            .json({ success: false, message: "비밀번호는 필수값입니다." });
+        }
+        // 토큰 발급
+        const emailUserToken = await this.usersService.signInUserByEmail(
+          email,
+          password,
+        );
+        // Response
+        res.json({ emailUserToken });
+      } else {
+        // 이메일 회원 로그인
+        const kakaoUserToken =
+          await this.usersService.signInUserByClientId(clientId);
+        // Response
+        res.json({ kakaoUserToken });
+      }
     } catch (error) {
       next(error);
     }
@@ -98,7 +123,12 @@ class UsersController {
   getMyInfos = async (req, res, next) => {
     try {
       // Request
+      const user = req.user;
       // Response
+      return res.json({
+        email: user.email,
+        name: user.name,
+      });
     } catch (error) {
       next(error);
     }
