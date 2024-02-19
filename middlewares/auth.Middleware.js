@@ -49,8 +49,8 @@ const authMiddleware = async function (req, res, next) {
     }
 
     // user 정보 담기
-    res.locals.user = user;
-    console.log(res.locals.user);
+    req.user = user;
+
     next();
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });

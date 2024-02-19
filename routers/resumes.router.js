@@ -1,20 +1,33 @@
 const express = require("express");
-const router = express.Router();
-const resumeController = require("../controllers/resumes");
+
+/**Prisma ORM, Redis 의존성 주입 */
+const prisma = require("../utils/prisma/index");
+const redisClient = require("../redis/client");
+
+const ResumesRepository = require("../repositories/resumes.repository");
+const ResumesService = require("../services/resuems.service");
+const ResumesController = require("../controllers/resumes.controller");
+
 const authMiddleware = require("../middlewares/auth.Middleware");
 
-router.get("/resumes", resumeController.getResumes);
-router.get("/resumes/:resumeId", resumeController.getResumeById);
-router.post("/resumes", authMiddleware, resumeController.createResume);
+const router = express.Router();
+
+const resumesRepository = new ResumesRepository(prisma, redisClient);
+const resumesService = new ResumesService(resumesRepository);
+const resumesController = new ResumesController(resumesService);
+
+router.get("/resumes", resumesController.getResumes);
+router.get("/resumes/:resumeId", resumesController.getResumeById);
+router.post("/resumes", authMiddleware, resumesController.createResume);
 router.patch(
   "/resumes/:resumeId",
   authMiddleware,
-  resumeController.updateResume,
+  resumesController.updateResume,
 );
 router.delete(
   "/resumes/:resumeId",
   authMiddleware,
-  resumeController.deleteResume,
+  resumesController.deleteResume,
 );
 
 module.exports = router;

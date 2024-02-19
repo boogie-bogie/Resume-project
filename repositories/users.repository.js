@@ -1,4 +1,4 @@
-const tokenKey = require("../redis/keys");
+const { tokenKey } = require("../redis/keys");
 
 class UsersRepository {
   constructor(prisma, redisClient) {
