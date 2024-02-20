@@ -20,7 +20,7 @@ class ResumesService {
 
   getResumeById = async (resumeId) => {
     const resume = await this.resumesRepository.getResumeById(resumeId);
-
+    if (!resume) throw new Error("존재하지 않는 이력서입니다.");
     return resume;
   };
 
@@ -54,7 +54,9 @@ class ResumesService {
     // 삭제할 이력서 조회
     const resume = await this.resumesRepository.getResumeById(resumeId);
     // 조회 및 권한 검증
-    if (!resume) throw new Error("존재하지 않는 이력서입니다.");
+    if (!resume) {
+      throw new Error("존재하지 않는 이력서입니다.");
+    }
     // if (resume.userId !== user.userId)
     //   throw new Error("올바르지 않은 요청입니다.");
     // 이력서 삭제

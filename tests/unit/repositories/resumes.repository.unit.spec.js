@@ -2,7 +2,7 @@ const ResumesRepository = require("../../../repositories/resumes.repository");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 // Mocked data
-const newResume = require("../../data/all-resumes.data.json");
+const newResume = require("../../data/new-resume.data.json");
 const allResumes = require("../../data/all-resumes.data.json");
 
 /** Repository 테스트 케이스 작성 패턴
@@ -34,7 +34,7 @@ describe("ResumesRepository", () => {
         .mockResolvedValue(allResumes);
 
       // Call - 메서드 호출
-      const resumes = await resumesRepository.getAllResumes(
+      const retrievedResumes = await resumesRepository.getAllResumes(
         "createdAt",
         "desc",
       );
@@ -56,7 +56,7 @@ describe("ResumesRepository", () => {
         },
         orderBy: [{ createdAt: "desc" }],
       });
-      expect(resumes).toEqual(allResumes);
+      expect(retrievedResumes).toEqual(allResumes);
 
       // Restore
       findManyMock.mockRestore();
