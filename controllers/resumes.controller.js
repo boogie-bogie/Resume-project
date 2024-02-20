@@ -8,7 +8,7 @@ class ResumesController {
    * 3. 서비스 계층에 요청
    * 4. Response
    */
-  getResumes = async (req, res, next) => {
+  getAllResumes = async (req, res, next) => {
     try {
       // Request
       const orderKey = req.query.orderKey ?? "resumeId";
@@ -121,7 +121,6 @@ class ResumesController {
     try {
       // Request
       const user = req.user;
-      console.log("딜리트", user);
       const { resumeId } = req.params;
 
       // 유효성검사

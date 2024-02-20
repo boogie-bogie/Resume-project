@@ -7,7 +7,7 @@ const allResumes = require("../../data/all-resumes.data.json");
 /** Service 테스트 케이스 작성 패턴
  * beforeEach() 
     - 모킹한 Repository 메서드를 jest.fn()로 대체
-    - 모킹한 Repository 인스턴스 생성
+    - Service 인스턴스 생성
  * afterEach()
     - 각 테스트 종료시 모킹 초기화
  * describe('Test Case 1')
@@ -40,7 +40,7 @@ describe("ResumesService", () => {
   });
 
   describe("getAllResumes", () => {
-    it("이력서 목록(allResumes)를 반환해야함.", async () => {
+    it("orderKey와 orderValue를 기준으로 정렬된 모든 이력서 목록을 검색하여 반환해야함.", async () => {
       // Mocking - Repo. Method
       repoMocks.getAllResumes.mockResolvedValue(allResumes);
 
@@ -216,7 +216,3 @@ describe("ResumesService", () => {
     });
   });
 });
-
-// Mocking - Repo. Method
-// Call - Repository 메서드 호출
-// expect - matcher
