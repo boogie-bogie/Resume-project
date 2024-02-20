@@ -16,7 +16,7 @@ const resumesRepository = new ResumesRepository(prisma, redisClient);
 const resumesService = new ResumesService(resumesRepository);
 const resumesController = new ResumesController(resumesService);
 
-router.get("/resumes", resumesController.getResumes);
+router.get("/resumes", resumesController.getAllResumes);
 router.get("/resumes/:resumeId", resumesController.getResumeById);
 router.post("/resumes", authMiddleware, resumesController.createResume);
 router.patch(
