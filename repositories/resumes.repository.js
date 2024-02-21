@@ -25,7 +25,7 @@ class ResumesRepository {
       },
       orderBy: [
         {
-          [orderKey]: orderValue,
+          [orderKey]: orderValue.toLowerCase(),
         },
       ],
     });

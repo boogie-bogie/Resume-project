@@ -8,7 +8,6 @@ const UsersRepository = require("../repositories/users.repository");
 const UsersService = require("../services/users.service");
 const UsersController = require("../controllers/users.controller");
 
-const jwtValidateMiddleware = require("../middlewares/jwt-validate.Middleware");
 const authMiddleware = require("../middlewares/auth.Middleware");
 
 const router = express.Router();
@@ -19,11 +18,6 @@ const usersController = new UsersController(usersService);
 
 router.post("/sign-up", usersController.createUser);
 router.post("/sign-in", usersController.userLogin);
-router.get(
-  "/users",
-  jwtValidateMiddleware,
-  authMiddleware,
-  usersController.getMyInfos,
-);
+router.get("/users", authMiddleware, usersController.getMyInfos);
 
 module.exports = router;
