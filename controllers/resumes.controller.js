@@ -110,7 +110,7 @@ class ResumesController {
       // Response
       return res.status(201).json({
         message: "이력서가 성공적으로 업데이트되었습니다.😄",
-        updatedResume,
+        data: updatedResume,
       });
     } catch (error) {
       next(error);
