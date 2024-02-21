@@ -30,18 +30,18 @@ describe("ResumesController", () => {
     });
 
     it("orderKey와 orderValue를 기준으로 정렬된 모든 이력서 목록을 검색하여 반환해야함.", async () => {
-      const mockResumes = [
+      const resumes = [
         { id: 1, title: "이력서 1" },
         { id: 2, title: "이력서 2" },
       ];
-      serviceMocks.getAllResumes.mockResolvedValue(mockResumes);
+      serviceMocks.getAllResumes.mockResolvedValue(resumes);
       await resumesController.getAllResumes(req, res, next);
       expect(serviceMocks.getAllResumes).toHaveBeenCalledWith(
         "resumeId",
         "desc",
       );
       expect(res.statusCode).toBe(200);
-      expect(res._getJSONData()).toEqual({ data: mockResumes });
+      expect(res._getJSONData()).toEqual({ data: resumes });
     });
 
     it("에러가 발생하면 next 함수 호출과 함께 에러를 반환해야함.", async () => {
@@ -172,7 +172,7 @@ describe("ResumesController", () => {
       expect(res.statusCode).toBe(201);
       expect(res._getJSONData()).toEqual({
         message: "이력서가 성공적으로 업데이트되었습니다.😄",
-        updatedResume,
+        data: updatedResume,
       });
     });
 
