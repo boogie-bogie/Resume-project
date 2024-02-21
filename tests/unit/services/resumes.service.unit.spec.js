@@ -79,8 +79,8 @@ describe("ResumesService", () => {
       );
 
       // Call - Repository 메서드 호출
-      // 존재하지 않는 100번 resumeId
-      const rejectedPromise = resumesService.getResumeById(100);
+      const IsNotExistResumeId = 100;
+      const rejectedPromise = resumesService.getResumeById(IsNotExistResumeId);
 
       // expect - matcher
       await expect(rejectedPromise).rejects.toThrow(
