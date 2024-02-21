@@ -50,7 +50,7 @@ class UsersController {
           });
 
         // 이메일 회원 회원정보 등록
-        const createdEmailUser = await this.usersService.signUpUserByEmail(
+        const createdEmailUser = await this.usersService.createUserByEmail(
           email,
           password,
           name,
@@ -66,7 +66,7 @@ class UsersController {
         });
       } else {
         // clientId가 있는 경우 카카오 회원 회원정보 등록
-        const createdKakaoUser = await this.usersService.signUpUserByClientId(
+        const createdKakaoUser = await this.usersService.createUserByClientId(
           clientId,
           name,
           role,
@@ -102,7 +102,7 @@ class UsersController {
             .json({ success: false, message: "비밀번호는 필수값입니다." });
         }
         // 토큰 발급
-        const emailUserToken = await this.usersService.signInUserByEmail(
+        const emailUserToken = await this.usersService.loginUserByEmail(
           email,
           password,
         );

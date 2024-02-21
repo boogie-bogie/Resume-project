@@ -29,6 +29,7 @@ describe("ResumesRepository", () => {
   describe("getAllResumes", () => {
     it("이력서 생성일 기준으로 내림차순 정렬이 적용된 이력서 목록(allResumes)을 검색하여 반환해야함.", async () => {
       // Mocking - Prisma findMany 메서드
+
       const findManyMock = jest
         .spyOn(resumesRepository.prisma.resumes, "findMany")
         .mockResolvedValue(allResumes);

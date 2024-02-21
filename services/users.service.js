@@ -6,7 +6,7 @@ class UsersService {
     this.usersRepository = usersRepository;
   }
 
-  signUpUserByEmail = async (email, password, name, role) => {
+  createUserByEmail = async (email, password, name, role) => {
     const emailUser = await this.usersRepository.findUserByEmail(email);
     if (emailUser) throw new Error("이미 가입된 이메일입니다.");
 
@@ -23,7 +23,7 @@ class UsersService {
     };
   };
 
-  signUpUserByClientId = async (clientId, name, role) => {
+  createUserByClientId = async (clientId, name, role) => {
     const kakaoUser = await this.usersRepository.findUserByClientId(clientId);
     if (kakaoUser) throw new Error("이미 가입된 사용자 입니다.");
 
@@ -38,7 +38,7 @@ class UsersService {
     };
   };
 
-  signInUserByEmail = async (email, password) => {
+  loginUserByEmail = async (email, password) => {
     const emailUser = await this.usersRepository.findUserByEmail(email);
     if (!emailUser) throw new Error("존재하지 않는 이메일입니다.");
     if (!(await bcrypt.compare(password, emailUser.password)))
@@ -64,7 +64,7 @@ class UsersService {
     // Return
     return { accessToken, refreshToken };
   };
-  signInUserByClientId = async (clientId) => {
+  loginUserByClientId = async (clientId) => {
     const kakaoUser = await this.usersRepository.findUserByClientId(clientId);
     if (!kakaoUser) throw new Error("존재하지 않는 사용자입니다.");
     // Token 발급

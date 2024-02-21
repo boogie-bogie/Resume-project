@@ -74,12 +74,12 @@ describe("ResumesController", () => {
     });
 
     it("특정 id값으로 단건의 이력서를 검색하여 반환해야함.", async () => {
-      const resumes = { id: 1, title: "이력서 1" };
-      serviceMocks.getResumeById.mockResolvedValue(resumes);
+      const resume = { id: 1, title: "이력서 1" };
+      serviceMocks.getResumeById.mockResolvedValue(resume);
       await resumesController.getResumeById(req, res, next);
       expect(serviceMocks.getResumeById).toHaveBeenCalledWith(1);
       expect(res.statusCode).toBe(200);
-      expect(res._getJSONData()).toEqual({ data: resumes });
+      expect(res._getJSONData()).toEqual({ data: resume });
     });
 
     it("에러가 발생하면 next 함수 호출과 함께 에러를 반환해야함.", async () => {
@@ -103,8 +103,8 @@ describe("ResumesController", () => {
     });
 
     it("새로 생성한 이력서를 반환해야 함", async () => {
-      const newResume = { id: 3, title: "새로운 이력서" };
-      serviceMocks.createResume.mockResolvedValue(newResume);
+      const createdResume = { id: 3, title: "새로운 이력서" };
+      serviceMocks.createResume.mockResolvedValue(createdResume);
       await resumesController.createResume(req, res, next);
       expect(serviceMocks.createResume).toHaveBeenCalledWith(
         "새로운 이력서",
@@ -114,7 +114,7 @@ describe("ResumesController", () => {
       expect(res.statusCode).toBe(201);
       expect(res._getJSONData()).toEqual({
         message: "이력서가 생성되었습니다.😄",
-        data: newResume,
+        data: createdResume,
       });
     });
 
@@ -230,7 +230,7 @@ describe("ResumesController", () => {
       req.params.resumeId = 1;
     });
 
-    it("특정 id값의 이력서를 삭제해야 함", async () => {
+    it("특정 id값의 이력서를 삭제하고 삭제된 이력서를 반환해야 함", async () => {
       const deletedResume = { id: 1, title: "삭제된 이력서" };
       serviceMocks.deleteResume.mockResolvedValue(deletedResume);
       await resumesController.deleteResume(req, res, next);

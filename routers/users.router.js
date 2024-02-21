@@ -18,6 +18,11 @@ const usersController = new UsersController(usersService);
 
 router.post("/sign-up", usersController.createUser);
 router.post("/sign-in", usersController.userLogin);
-router.get("/users", authMiddleware, usersController.getMyInfos);
+router.get(
+  "/users",
+  jwtValidateMiddleware,
+  authMiddleware,
+  usersController.getMyInfos,
+);
 
 module.exports = router;

@@ -1,9 +1,7 @@
-const express = require("express");
-const router = express.Router();
 const prisma = require("../utils/prisma/index");
 const jwt = require("jsonwebtoken");
 
-router.post("/token", async (req, res) => {
+const jwtValidateMiddleware = async (req, res) => {
   const { refreshToken } = req.body;
 
   // 인증과 유효기간 검증이 완료됐다면, token에 할당
@@ -45,6 +43,6 @@ router.post("/token", async (req, res) => {
     accessToken: newAccessToken,
     refreshToken: newRefreshToken,
   });
-});
+};
 
-module.exports = router;
+module.exports = jwtValidateMiddleware;
