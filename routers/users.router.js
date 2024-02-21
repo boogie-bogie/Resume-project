@@ -8,6 +8,7 @@ const UsersRepository = require("../repositories/users.repository");
 const UsersService = require("../services/users.service");
 const UsersController = require("../controllers/users.controller");
 
+const jwtValidateMiddleware = require("../middlewares/jwt-validate.Middleware");
 const authMiddleware = require("../middlewares/auth.Middleware");
 
 const router = express.Router();

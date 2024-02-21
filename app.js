@@ -17,12 +17,10 @@ app.use(cookieParser());
 const router = express.Router();
 const userRoutes = require("./routers/users.router");
 const resumeRoutes = require("./routers/resumes.router");
-const tokenRoutes = require("./routers/token.router");
 
 app.use("/api", router);
 app.use("/api", userRoutes);
 app.use("/api", resumeRoutes);
-app.use("/api", tokenRoutes);
 
 router.get("/", (req, res) => {
   return res.json({ message: "안녕하세요.😄" });

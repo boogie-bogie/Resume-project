@@ -8,6 +8,7 @@ const ResumesRepository = require("../repositories/resumes.repository");
 const ResumesService = require("../services/resuems.service");
 const ResumesController = require("../controllers/resumes.controller");
 
+const jwtValidateMiddleware = require("../middlewares/jwt-validate.Middleware");
 const authMiddleware = require("../middlewares/auth.Middleware");
 
 const router = express.Router();
