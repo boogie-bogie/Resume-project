@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const errorHandlerMiddleware = require("./middlewares/errorhandler.Middleware");
+const { apiTimeCheck } = require("./middlewares/api-time-check");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger-output.json");
@@ -18,6 +19,7 @@ const router = express.Router();
 const userRoutes = require("./routers/users.router");
 const resumeRoutes = require("./routers/resumes.router");
 
+app.use(apiTimeCheck);
 app.use("/api", router);
 app.use("/api", userRoutes);
 app.use("/api", resumeRoutes);

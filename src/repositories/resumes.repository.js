@@ -11,6 +11,16 @@ class ResumesRepository {
    */
 
   getAllResumes = async (orderKey, orderValue) => {
+    /**slow API 알림 구현 */
+    const randomNumber = Math.floor(Math.random() * 6);
+    console.log("randomNumber", randomNumber);
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, randomNumber * 1000);
+    });
+
     const resumes = await this.prisma.resumes.findMany({
       select: {
         resumeId: true,
