@@ -13,9 +13,12 @@ const apiTimeCheck = (req, res, next) => {
       // slack
       const requestUrl = req.originalUrl;
       const authorization = req.headers.authorization;
-      axios.post("", {
-        text: `URL: ${requestUrl}\nTOKEN: ${authorization}\nAPI가 너무 느려요!! > ${end - start}ms가 걸렸어요.`,
-      });
+      axios.post(
+        "https://hooks.slack.com/services/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",
+        {
+          text: `URL: ${requestUrl}\nTOKEN: ${authorization}\nAPI가 너무 느려요!! > ${end - start}ms가 걸렸어요.`,
+        },
+      );
     }
   });
 };

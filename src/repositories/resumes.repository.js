@@ -10,7 +10,10 @@ class ResumesRepository {
    */
 
   getAllResumes = async (orderKey, orderValue) => {
-    /**slow API 알림 구현 */
+    /**delay
+     * API 요청에 대해 반환까지 랜덤으로 0-5초 이상 걸리는 경우
+     * console 출력과 Slack 알림 기능을 추가
+     */
     const randomNumber = Math.floor(Math.random() * 6);
     console.log("randomNumber", randomNumber);
 
