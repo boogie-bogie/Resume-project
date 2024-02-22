@@ -2,6 +2,7 @@ const express = require("express");
 
 /**Prisma ORM, Redis 의존성 주입 */
 const prisma = require("../utils/prisma/index");
+const { dataSource } = require("../src/typeorm/index");
 const redisClient = require("../redis/client");
 
 const ResumesRepository = require("../src/repositories/resumes.repository");
@@ -12,7 +13,11 @@ const jwtValidateMiddleware = require("../middlewares/jwt-validate.Middleware");
 
 const router = express.Router();
 
-const resumesRepository = new ResumesRepository(prisma, redisClient);
+const resumesRepository = new ResumesRepository(
+  prisma,
+  dataSource,
+  redisClient,
+);
 const resumesService = new ResumesService(resumesRepository);
 const resumesController = new ResumesController(resumesService);
 

@@ -16,15 +16,9 @@ class ResumesController {
 
       // 유효성 검사
       if (!["resumeId", "status"].includes(orderKey))
-        return res.status(400).json({
-          success: false,
-          errorMessage: "orderKey 가 올바르지 않습니다.",
-        });
+        throw new Error("orderKey 가 올바르지 않습니다.");
       if (!["asc", "desc"].includes(orderValue.toLowerCase()))
-        return res.status(400).json({
-          success: false,
-          errorMessage: "orderValue 가 올바르지 않습니다.",
-        });
+        throw new Error("orderValue 가 올바르지 않습니다.");
 
       // 이력서 목록 조회
       const resumes = await this.resumesService.getAllResumes(
@@ -44,10 +38,8 @@ class ResumesController {
       // Request
       const { resumeId } = req.params;
       // 유효성 검사
-      if (!resumeId)
-        return res
-          .status(400)
-          .json({ success: false, errorMessage: "resumeId는 필수값입니다." });
+      if (!resumeId) throw new Error("resumeId는 필수값입니다.");
+
       // 이력서 세부 조회
       const resume = await this.resumesService.getResumeById(resumeId);
       // Response
@@ -64,16 +56,8 @@ class ResumesController {
       const { title, content } = req.body;
 
       // 유효성 검사
-      if (!title)
-        return res.status(400).json({
-          success: false,
-          errorMessage: "이력서 제목은 필수 항목입니다.",
-        });
-      if (!content)
-        return res.status(400).json({
-          success: false,
-          errorMessage: "자기소개는 필수 항목입니다.",
-        });
+      if (!title) throw new Error("이력서 제목은 필수 항목입니다.");
+      if (!content) throw new Error("자기소개는 필수 항목입니다.");
 
       // 이력서 목록 생성
       const createdResume = await this.resumesService.createResume(
@@ -98,25 +82,10 @@ class ResumesController {
       const { title, content, status } = req.body;
       const user = req.user;
       // 유효성 검사
-      if (!resumeId)
-        return res
-          .status(400)
-          .json({ success: false, errorMessage: "resumeId는 필수값입니다." });
-      if (!title)
-        return res.status(400).json({
-          success: false,
-          errorMessage: "이력서 제목은 필수 항목입니다.",
-        });
-      if (!content)
-        return res.status(400).json({
-          success: false,
-          errorMessage: "자기소개는 필수 항목입니다.",
-        });
-      if (!status)
-        return res.status(400).json({
-          success: false,
-          errorMessage: "지원 상태는 필수 항목입니다.",
-        });
+      if (!resumeId) throw new Error("resumeId는 필수값입니다.");
+      if (!title) throw new Error("이력서 제목은 필수 항목입니다.");
+      if (!content) throw new Error("자기소개는 필수 항목입니다.");
+      if (!status) throw new Error("지원 상태는 필수 항목입니다.");
       if (
         ![
           "APPLY",
@@ -127,11 +96,9 @@ class ResumesController {
           "FINAL_PASS",
         ].includes(status)
       )
-        return res.status(400).json({
-          success: false,
-          errorMessage:
-            "올바르지 않은 상태값입니다. 지원 상태는 'APPLY', 'DROP', 'PASS', 'INTERVIEW1', 'INTERVIEW2', 'FINAL_PASS' 중 하나의 항목만 기재하실 수 있습니다. ",
-        });
+        throw new Error(
+          "올바르지 않은 상태값입니다. 지원 상태는 'APPLY', 'DROP', 'PASS', 'INTERVIEW1', 'INTERVIEW2', 'FINAL_PASS' 중 하나의 항목만 기재하실 수 있습니다. ",
+        );
 
       // 이력서 수정
       const updatedResume = await this.resumesService.updateResume(
@@ -158,10 +125,7 @@ class ResumesController {
       const { resumeId } = req.params;
 
       // 유효성검사
-      if (!resumeId)
-        return res
-          .status(400)
-          .json({ success: false, errorMessage: "resumeId는 필수값입니다." });
+      if (!resumeId) throw new Error("resumeId는 필수값입니다.");
 
       // 이력서 삭제
       const deletedResume = await this.resumesService.deleteResume(

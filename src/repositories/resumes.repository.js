@@ -1,6 +1,7 @@
 class ResumesRepository {
-  constructor(prisma, redisClient) {
+  constructor(prisma, dataSource, redisClient) {
     this.prisma = prisma;
+    this.dataSource = dataSource;
     this.redisClient = redisClient;
   }
   /**
@@ -49,7 +50,22 @@ class ResumesRepository {
         createdAt: true,
       },
     });
-
+    // const resume = await this.dataSource.getRepository("Resumes").findOne({
+    //   where: {
+    //     resumeId: +resumeId,
+    //   },
+    //   select: {
+    //     resumeId: true,
+    //     title: true,
+    //     content: true,
+    //     user: {
+    //       select: {
+    //         name: true,
+    //       },
+    //     },
+    //     createdAt: true,
+    //   },
+    // });
     return resume;
   };
 

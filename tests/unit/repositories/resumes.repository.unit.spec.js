@@ -1,4 +1,4 @@
-const ResumesRepository = require("../../../repositories/resumes.repository");
+const ResumesRepository = require("../../../src/repositories/resumes.repository");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 // Mocked data
@@ -58,6 +58,7 @@ describe("ResumesRepository", () => {
         orderBy: [{ createdAt: "desc" }],
       });
       expect(retrievedResumes).toEqual(allResumes);
+      // expect(retrievedResumes).toBeDefined();
 
       // Restore
       findManyMock.mockRestore();

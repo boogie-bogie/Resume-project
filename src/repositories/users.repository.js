@@ -1,8 +1,9 @@
 const { tokenKey } = require("../../redis/keys");
 
 class UsersRepository {
-  constructor(prisma, redisClient) {
+  constructor(prisma, dataSource, redisClient) {
     this.prisma = prisma;
+    this.dataSource = dataSource;
     this.redisClient = redisClient;
   }
 

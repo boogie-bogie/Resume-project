@@ -1,4 +1,4 @@
-const ResumesService = require("../../../services/resuems.service");
+const ResumesService = require("../../../src/services/resumes.service");
 
 // Mocked data
 const newResume = require("../../data/new-resume.data.json");

@@ -1,5 +1,5 @@
-const ResumesController = require("../../../controllers/resumes.controller");
-const ResumesService = require("../../../services/resuems.service");
+const ResumesController = require("../../../src/controllers/resumes.controller");
+const ResumesService = require("../../../src/services/resumes.service");
 const httpMocks = require("node-mocks-http");
 
 describe("ResumesController", () => {
