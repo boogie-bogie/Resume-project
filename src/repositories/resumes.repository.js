@@ -61,14 +61,12 @@ class ResumesRepository {
   };
 
   createResume = async (title, content, userId) => {
-    const createdResume = await this.dataSource
-      .getRepository("Resumes")
-      .create({
-        title,
-        content,
-        status: "APPLY",
-        userId,
-      });
+    const createdResume = await this.dataSource.getRepository("Resumes").save({
+      title,
+      content,
+      status: "APPLY",
+      userId,
+    });
     return createdResume;
   };
 

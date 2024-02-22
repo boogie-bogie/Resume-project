@@ -16,14 +16,12 @@ class UsersRepository {
   };
 
   createEmailUser = async (email, password, name, role) => {
-    const createdEmailUser = await this.dataSource
-      .getRepository("Users")
-      .create({
-        email,
-        password,
-        name,
-        role,
-      });
+    const createdEmailUser = await this.dataSource.getRepository("Users").save({
+      email,
+      password,
+      name,
+      role,
+    });
     return createdEmailUser;
   };
 
@@ -37,13 +35,11 @@ class UsersRepository {
   };
 
   createKakaoUser = async (clientId, name, role) => {
-    const createdKakaoUser = await this.dataSource
-      .getRepository("Users")
-      .create({
-        clientId,
-        name,
-        role,
-      });
+    const createdKakaoUser = await this.dataSource.getRepository("Users").save({
+      clientId,
+      name,
+      role,
+    });
     return createdKakaoUser;
   };
 
