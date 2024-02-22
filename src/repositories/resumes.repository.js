@@ -44,23 +44,7 @@ class ResumesRepository {
   };
 
   getResumeById = async (resumeId) => {
-    const resume = await this.prisma.resumes.findFirst({
-      where: {
-        resumeId: +resumeId,
-      },
-      select: {
-        resumeId: true,
-        title: true,
-        content: true,
-        user: {
-          select: {
-            name: true,
-          },
-        },
-        createdAt: true,
-      },
-    });
-    // const resume = await this.dataSource.getRepository("Resumes").findOne({
+    // const resume = await this.prisma.resumes.findFirst({
     //   where: {
     //     resumeId: +resumeId,
     //   },
@@ -76,6 +60,22 @@ class ResumesRepository {
     //     createdAt: true,
     //   },
     // });
+    const resume = await this.dataSource.getRepository("Resumes").findOne({
+      where: {
+        resumeId: +resumeId,
+      },
+      select: {
+        resumeId: true,
+        title: true,
+        content: true,
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        createdAt: true,
+      },
+    });
     return resume;
   };
 
