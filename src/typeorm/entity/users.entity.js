@@ -7,9 +7,12 @@ module.exports = new EntitySchema({
     userId: {
       primary: true,
       type: "int",
-      generated: true,
+      generated: "increment",
     },
     clientId: {
+      type: "varchar",
+    },
+    email: {
       type: "varchar",
     },
     password: {
@@ -23,6 +26,7 @@ module.exports = new EntitySchema({
     },
     createdAt: {
       type: "datetime",
+      default: () => "CURRENT_TIMESTAMP",
     },
     updatedAt: {
       type: "datetime",

@@ -1,6 +1,5 @@
 class ResumesRepository {
-  constructor(prisma, dataSource, redisClient) {
-    this.prisma = prisma;
+  constructor(dataSource, redisClient) {
     this.dataSource = dataSource;
     this.redisClient = redisClient;
   }
@@ -21,7 +20,7 @@ class ResumesRepository {
       }, randomNumber * 1000);
     });
 
-    const resumes = await this.prisma.resumes.findMany({
+    const resumes = await this.dataSource.getRepository("Resumes").find({
       select: {
         resumeId: true,
         title: true,
@@ -34,32 +33,14 @@ class ResumesRepository {
         },
         createdAt: true,
       },
-      orderBy: [
-        {
-          [orderKey]: orderValue.toLowerCase(),
-        },
-      ],
+      order: {
+        [orderKey]: orderValue.toLowerCase(),
+      },
     });
     return resumes;
   };
 
   getResumeById = async (resumeId) => {
-    // const resume = await this.prisma.resumes.findFirst({
-    //   where: {
-    //     resumeId: +resumeId,
-    //   },
-    //   select: {
-    //     resumeId: true,
-    //     title: true,
-    //     content: true,
-    //     user: {
-    //       select: {
-    //         name: true,
-    //       },
-    //     },
-    //     createdAt: true,
-    //   },
-    // });
     const resume = await this.dataSource.getRepository("Resumes").findOne({
       where: {
         resumeId: +resumeId,
@@ -80,37 +61,37 @@ class ResumesRepository {
   };
 
   createResume = async (title, content, userId) => {
-    const createdResume = await this.prisma.resumes.create({
-      data: {
+    const createdResume = await this.dataSource
+      .getRepository("Resumes")
+      .create({
         title,
         content,
         status: "APPLY",
         userId,
-      },
-    });
+      });
     return createdResume;
   };
 
   updateResume = async (resumeId, title, content, status) => {
-    const updatedResume = await this.prisma.resumes.update({
-      where: {
+    const updatedResume = await this.dataSource.getRepository("Resumes").update(
+      {
         resumeId: +resumeId,
       },
-      data: {
+      {
         title,
         content,
         status,
       },
-    });
+    );
     return updatedResume;
   };
 
   deleteResume = async (resumeId) => {
-    const deletedResume = await this.prisma.resumes.delete({
-      where: {
+    const deletedResume = await this.dataSource
+      .getRepository("Resumes")
+      .delete({
         resumeId: +resumeId,
-      },
-    });
+      });
     return deletedResume;
   };
 }

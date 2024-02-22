@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const prisma = require("../utils/prisma/index");
+const { dataSource } = require("../src/typeorm/index");
 
 /**기존 사용자 인증 미들웨어 'authorization' */
 const jwtValidateMiddleware = async function (req, res, next) {
@@ -36,7 +36,7 @@ const jwtValidateMiddleware = async function (req, res, next) {
         "userId 인증 정보가 올바르지 않습니다. 다시 로그인 해주세요!",
       );
     }
-    const user = await prisma.users.findFirst({
+    const user = await dataSource.getRepository("Users").findOne({
       where: {
         userId: +token.userId,
       },

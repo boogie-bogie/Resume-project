@@ -7,7 +7,11 @@ module.exports = new EntitySchema({
     resumeId: {
       primary: true,
       type: "int",
-      generated: true,
+      generated: "increment",
+    },
+    userId: {
+      // 외래 키 추가
+      type: "int",
     },
     title: {
       type: "varchar",
@@ -15,15 +19,17 @@ module.exports = new EntitySchema({
     content: {
       type: "varchar",
     },
+    status: {
+      type: "enum",
+      enum: ["APPLY", "DROP", "PASS", "INTERVIEW1", "INTERVIEW2", "FINAL_PASS"],
+      default: "APPLY",
+    },
     createdAt: {
       type: "datetime",
+      default: () => "CURRENT_TIMESTAMP",
     },
     updatedAt: {
       type: "datetime",
-    },
-    userId: {
-      // 외래 키 추가
-      type: "int",
     },
   },
   relations: {

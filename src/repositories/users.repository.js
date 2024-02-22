@@ -1,14 +1,13 @@
 const { tokenKey } = require("../../redis/keys");
 
 class UsersRepository {
-  constructor(prisma, dataSource, redisClient) {
-    this.prisma = prisma;
+  constructor(dataSource, redisClient) {
     this.dataSource = dataSource;
     this.redisClient = redisClient;
   }
 
   findUserByEmail = async (email) => {
-    const emailUser = await this.prisma.users.findFirst({
+    const emailUser = await this.dataSource.getRepository("Users").findOne({
       where: {
         email: email,
       },
@@ -17,19 +16,19 @@ class UsersRepository {
   };
 
   createEmailUser = async (email, password, name, role) => {
-    const createdEmailUser = await this.prisma.users.create({
-      data: {
+    const createdEmailUser = await this.dataSource
+      .getRepository("Users")
+      .create({
         email,
         password,
         name,
         role,
-      },
-    });
+      });
     return createdEmailUser;
   };
 
   findUserByClientId = async (clientId) => {
-    const kakaoUser = await this.prisma.users.findFirst({
+    const kakaoUser = await this.dataSource.getRepository("Users").findOne({
       where: {
         clientId,
       },
@@ -38,19 +37,19 @@ class UsersRepository {
   };
 
   createKakaoUser = async (clientId, name, role) => {
-    const createdKakaoUser = await this.prisma.users.create({
-      data: {
+    const createdKakaoUser = await this.dataSource
+      .getRepository("Users")
+      .create({
         clientId,
         name,
         role,
-      },
-    });
+      });
     return createdKakaoUser;
   };
 
   findUserByUserId = async (userId) => {
     // 토큰에 있는 userId가 있으니까, 갖고 있는 토큰 정보를 가져오기 위해 user를 불러온다.
-    const user = await prisma.users.findFirst({
+    const user = await this.dataSource.getRepository("Users").findOne({
       where: {
         userId,
       },
