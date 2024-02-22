@@ -4,11 +4,11 @@ const express = require("express");
 const prisma = require("../utils/prisma/index");
 const redisClient = require("../redis/client");
 
-const UsersRepository = require("../repositories/users.repository");
-const UsersService = require("../services/users.service");
-const UsersController = require("../controllers/users.controller");
+const UsersRepository = require("../src/repositories/users.repository");
+const UsersService = require("../src/services/users.service");
+const UsersController = require("../src/controllers/users.controller");
 
-const authMiddleware = require("../middlewares/auth.Middleware");
+const jwtValidateMiddleware = require("../middlewares/jwt-validate.Middleware");
 
 const router = express.Router();
 
@@ -18,6 +18,6 @@ const usersController = new UsersController(usersService);
 
 router.post("/sign-up", usersController.createUser);
 router.post("/sign-in", usersController.userLogin);
-router.get("/users", authMiddleware, usersController.getMyInfos);
+router.get("/users", jwtValidateMiddleware, usersController.getMyInfos);
 
 module.exports = router;

@@ -4,11 +4,11 @@ const express = require("express");
 const prisma = require("../utils/prisma/index");
 const redisClient = require("../redis/client");
 
-const ResumesRepository = require("../repositories/resumes.repository");
-const ResumesService = require("../services/resuems.service");
-const ResumesController = require("../controllers/resumes.controller");
+const ResumesRepository = require("../src/repositories/resumes.repository");
+const ResumesService = require("../src/services/resumes.service");
+const ResumesController = require("../src/controllers/resumes.controller");
 
-const authMiddleware = require("../middlewares/auth.Middleware");
+const jwtValidateMiddleware = require("../middlewares/jwt-validate.Middleware");
 
 const router = express.Router();
 
@@ -21,17 +21,17 @@ router.get("/resumes/:resumeId", resumesController.getResumeById);
 router.post(
   "/resumes",
 
-  authMiddleware,
+  jwtValidateMiddleware,
   resumesController.createResume,
 );
 router.patch(
   "/resumes/:resumeId",
-  authMiddleware,
+  jwtValidateMiddleware,
   resumesController.updateResume,
 );
 router.delete(
   "/resumes/:resumeId",
-  authMiddleware,
+  jwtValidateMiddleware,
   resumesController.deleteResume,
 );
 

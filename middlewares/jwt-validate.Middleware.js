@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const prisma = require("../utils/prisma/index");
 
 /**기존 사용자 인증 미들웨어 'authorization' */
-const authMiddleware = async function (req, res, next) {
+const jwtValidateMiddleware = async function (req, res, next) {
   try {
     //헤더에서 accessToken 가져오기
     const authorization = req.headers.authorization;
@@ -56,4 +56,4 @@ const authMiddleware = async function (req, res, next) {
     return res.status(400).json({ success: false, message: error.message });
   }
 };
-module.exports = authMiddleware;
+module.exports = jwtValidateMiddleware;
